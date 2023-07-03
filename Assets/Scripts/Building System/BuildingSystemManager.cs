@@ -172,6 +172,12 @@ public class BuildingSystemManager : MonoBehaviour
                     DehighlightSelectedObject(highlightedObject);
                 }
             }
+
+            // Right click to deselect all
+            if (Input.GetMouseButtonDown(1))
+            {
+                DeselectAll();
+            }
         }
 
         // Highlight selected Object
@@ -184,14 +190,13 @@ public class BuildingSystemManager : MonoBehaviour
             highlightEffectObjects.Remove(highlightedObject);
         }
 
-        // Open context menu for edition of the changes
-        ActivateContextMenu();
-
-        // Right click to deselect all
         if (Input.GetMouseButtonDown(1))
         {
-            DeselectAll();
+            Destroy(highlightedObject);
         }
+
+        // Open context menu for edition of the changes
+        ActivateContextMenu();
 
         // Click delete to remove all objects
         if (Input.GetKeyDown(KeyCode.Delete))

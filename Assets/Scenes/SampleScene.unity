@@ -3400,8 +3400,8 @@ MonoBehaviour:
   gridManager: {fileID: 1636494230}
   scale: 1
   previewMaterialProperties:
-    alpha: 1
-    color: {r: 0.5724902, g: 0.7780249, b: 0.7830189, a: 0.49019608}
+    alpha: 0.5
+    color: {r: 1, g: 1, b: 1, a: 0.49019608}
     texture: {fileID: 0}
   basicPreviewMaterial: {fileID: 2100000, guid: bcbba441c3dbc2f45ac25d0819ba7113,
     type: 2}

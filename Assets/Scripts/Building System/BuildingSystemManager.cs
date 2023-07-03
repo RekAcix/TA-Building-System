@@ -93,6 +93,9 @@ public class BuildingSystemManager : MonoBehaviour
         // Control Modes with keyboard keys.
         SwitchModes();
 
+        // Rotate and Control the Shape
+        ObjectRotationControl();
+
 
         // Different State Logic
         if (currentBuildingMode == buildingMode.grid)
@@ -163,6 +166,26 @@ public class BuildingSystemManager : MonoBehaviour
         {
             ChangeMode(buildingMode.none);
         }
+    }
+
+    public void ObjectRotationControl()
+    {
+        if (Input.GetKey(KeyCode.RightBracket))
+        {
+            currentObjectToPlace.GetComponent<ObjectDetailsScript>().Rotate(1f);
+        }
+
+        if (Input.GetKey(KeyCode.LeftBracket))
+        {
+            currentObjectToPlace.GetComponent<ObjectDetailsScript>().Rotate(-1f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Slash))
+        {
+            Debug.Log("Flips");
+            currentObjectToPlace.GetComponent<ObjectDetailsScript>().Flip(90f);
+        }
+
     }
 
     public void CheckForPlacementClick()
@@ -266,8 +289,8 @@ public class BuildingSystemManager : MonoBehaviour
 
         // Set detailed material properties
         Color newColor = previewMaterialProperties.color;
-        newColor.a = previewMaterialProperties.alpha;
-        meshRenderer.material.SetColor("_BaseColor", previewMaterialProperties.color);
+        newColor.a = alpha;
+        meshRenderer.material.SetColor("_BaseColor", newColor);
         meshRenderer.material.SetTexture("_BaseMap", previewMaterialProperties.texture);
     }
 

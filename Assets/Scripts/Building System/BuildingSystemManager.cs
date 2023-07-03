@@ -31,6 +31,9 @@ public class BuildingSystemManager : MonoBehaviour
     private Material basicPreviewMaterial;
 
     // Object lists
+    [SerializeField]
+    private Color highlightColor;
+
     private List<GameObject> placedObjects = new List<GameObject>();
     private List<GameObject> highlightEffectObjects = new List<GameObject>();
     private List<GameObject> selectedObjects = new List<GameObject>();
@@ -167,9 +170,9 @@ public class BuildingSystemManager : MonoBehaviour
         {
             if (highlightEffectObjects.Count > 0)
             {
-                foreach (GameObject highlightedObject in highlightEffectObjects)
+                foreach (GameObject highObject in highlightEffectObjects)
                 {
-                    DehighlightSelectedObject(highlightedObject);
+                    DehighlightSelectedObject(highObject);
                 }
             }
 
@@ -178,25 +181,28 @@ public class BuildingSystemManager : MonoBehaviour
             {
                 DeselectAll();
             }
+
+            return;
         }
 
         // Highlight selected Object
         HighlightSelectedObject(highlightedObject);
+        highlightEffectObjects.Add(highlightedObject);
 
         // On left click add to the selectedObjects list
         if (Input.GetMouseButtonDown(0))
         {
             selectedObjects.Add(highlightedObject);
             highlightEffectObjects.Remove(highlightedObject);
+
+            // Open context menu for edition of the changes
+            ActivateContextMenu();
         }
 
         if (Input.GetMouseButtonDown(1))
         {
             Destroy(highlightedObject);
         }
-
-        // Open context menu for edition of the changes
-        ActivateContextMenu();
 
         // Click delete to remove all objects
         if (Input.GetKeyDown(KeyCode.Delete))
@@ -355,7 +361,7 @@ public class BuildingSystemManager : MonoBehaviour
     {
         foreach (GameObject selectedObject in selectedObjects)
         {
-            DehighlightSelectedObject(selectedObject);
+            if (selectedObject != null) DehighlightSelectedObject(selectedObject);
         }
 
         selectedObjects.Clear();
@@ -363,8 +369,7 @@ public class BuildingSystemManager : MonoBehaviour
 
     public void HighlightSelectedObject(GameObject highlightedObject)
     {
-        highlightedObject.GetComponent<MeshRenderer>().SetColor("_BaseColor", highlightColor);
-        HighlightSelectedObject.Add(highlightedObject);
+        highlightedObject.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", highlightColor);
     }
 
     public void DehighlightSelectedObject(GameObject highlightedObject)

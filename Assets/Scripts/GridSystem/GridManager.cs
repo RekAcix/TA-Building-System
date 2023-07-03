@@ -13,12 +13,32 @@ public class GridManager : MonoBehaviour
     [SerializeField]
     private float gridCellSize = 1f;
 
-    private Grid baseGrid;
+    [SerializeField]
+    private Vector3 originPosition = Vector3.zero;
+
+    private Grid<GridCell> baseGrid;
+
+    // Creates the basic Grid Cell datatype
+    public class GridCell
+    {
+        private Grid<GridCell> grid;
+        private int x;
+        private int y;
+
+        private GameObject worldObject;
+
+        public GridCell(Grid<GridCell> grid, int x, int y)
+        {
+            this.grid = grid;
+            this.x = x;
+            this.y = y;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        baseGrid = new Grid(gridWidth, gridHeight, gridCellSize);
+        baseGrid = new Grid<GridCell>(gridWidth, gridHeight, gridCellSize, originPosition);
     }
 
     void Update()
@@ -33,7 +53,13 @@ public class GridManager : MonoBehaviour
         {
             Vector3 mouseWorldPosition = GetMouseWorldPositionOnPlane();
             Debug.Log(mouseWorldPosition);
+            // baseGrid.GetCell(mouseWorldPosition)
         }
+    }
+
+    public GridCell GetGridCell(Vector3 mousePosition)
+    {
+        return baseGrid.GetCell(GetMouseWorldPositionOnPlane());
     }
 
     public Vector3 GetMouseWorldPositionOnPlane()

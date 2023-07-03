@@ -16,6 +16,19 @@ public class BuildingSystemManager : MonoBehaviour
     [SerializeField]
     private float scale = 1f;
 
+    // Preview Material properties
+    [System.Serializable]
+    public struct MaterialProperties
+    {
+        public float alpha;
+        public Color color;
+        public Texture texture;
+    }
+
+    public MaterialProperties previewMaterialProperties;
+    [SerializeField]
+    private Material basicPreviewMaterial;
+
     // Basic building state machine
     public enum buildingMode
     {
@@ -43,12 +56,24 @@ public class BuildingSystemManager : MonoBehaviour
 
         } else
         {
-            // Changes the object
-            Destroy(currentObjectToPlace);
+
+            GameObject previousObject = currentObjectToPlace;
 
             // Change the instantiated object
-            currentObjectToPlace = Instantiate(newObject, objectParentTransform);
-            currentObjectToPlace.transform.position = GetMouseWorldPositionOnPlane();
+            SetNewObjectToPlace(newObject);
+
+            // Change material to preview
+            MeshRenderer meshRenderer = currentObjectToPlace.GetComponent<MeshRenderer>();
+            SetMaterialProperties(meshRenderer);
+
+            // Check for building mode, set freeform if not in any
+            if (currentBuildingMode == buildingMode.none)
+            {
+                ChangeMode(buildingMode.freeform);
+            }
+
+            // Destroys old one
+            Destroy(previousObject);
         }
     }
 
@@ -97,8 +122,9 @@ public class BuildingSystemManager : MonoBehaviour
             MoveCurrentObjectToMouseOnPlane();
             return;
         }
-        MoveCurrentObjectToGridCell(selectedGridCell);
 
+        MoveCurrentObjectToGridCell(selectedGridCell);
+        CheckForPlacementClick();
 
     }
 
@@ -111,6 +137,9 @@ public class BuildingSystemManager : MonoBehaviour
 
         // Follows the mouse based off physics raycast
         MoveCurrentObjectToMouseRaycast();
+
+        // Checks for placing the shape
+        CheckForPlacementClick();
     }
 
     private void HandleNoModeLogic()
@@ -134,6 +163,35 @@ public class BuildingSystemManager : MonoBehaviour
         {
             ChangeMode(buildingMode.none);
         }
+    }
+
+    public void CheckForPlacementClick()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Places the object
+            PlaceObject(Instantiate(currentObjectToPlace, objectParentTransform));
+            
+            // Allows to place more similiar objects
+            // GameObject newObject = Instantiate(currentObjectToPlace);
+            ChangeCurrentObject(currentObjectToPlace);
+        }
+    }
+
+    public void PlaceObject(GameObject currentObject)
+    {
+        MeshRenderer meshRenderer = currentObject.GetComponent<MeshRenderer>();
+        ObjectDetailsScript objectDetails = currentObject.GetComponent<ObjectDetailsScript>();
+        // Sets no transparency
+        SetMaterialProperties(meshRenderer, 1f);
+        objectDetails.Initialize();
+        
+    }
+
+    public void ChangeTexture(Texture newTexture)
+    {
+        previewMaterialProperties.texture = newTexture;
+        SetMaterialProperties();
     }
 
     public void MoveCurrentObjectToMouseOnPlane()
@@ -180,6 +238,37 @@ public class BuildingSystemManager : MonoBehaviour
             raycastHitPosition = GetMouseWorldPositionOnPlane();
         }
         return raycastHitPosition;
+    }
+
+    public void SetNewObjectToPlace(GameObject newObject)
+    {
+        // Place and assign Object
+        currentObjectToPlace = Instantiate(newObject, objectParentTransform);
+        currentObjectToPlace.transform.position = GetMouseWorldPositionOnPlane();
+    }
+
+    public void SetMaterialProperties()
+    {
+        if (currentObjectToPlace == null) return;
+        MeshRenderer meshRenderer = currentObjectToPlace.GetComponent<MeshRenderer>();
+        SetMaterialProperties(meshRenderer);
+    }
+
+    public void SetMaterialProperties(MeshRenderer meshRenderer)
+    {
+        SetMaterialProperties(meshRenderer, previewMaterialProperties.alpha);
+    }
+
+    public void SetMaterialProperties(MeshRenderer meshRenderer, float alpha)
+    {
+        // Change material to preview
+        meshRenderer.material.CopyPropertiesFromMaterial(basicPreviewMaterial);
+
+        // Set detailed material properties
+        Color newColor = previewMaterialProperties.color;
+        newColor.a = previewMaterialProperties.alpha;
+        meshRenderer.material.SetColor("_BaseColor", previewMaterialProperties.color);
+        meshRenderer.material.SetTexture("_BaseMap", previewMaterialProperties.texture);
     }
 
 }

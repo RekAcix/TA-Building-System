@@ -7,11 +7,13 @@ public class ObjectDetailsScript : MonoBehaviour
     private Vector3 lockedPosition;
 
     private float rotationSpeed = 90f;
+    private Color savedColor;
 
     public void Initialize()
     {
         lockedPosition = transform.position;
         this.gameObject.layer = LayerMask.NameToLayer("Default");
+        savedColor = GetComponent<MeshRenderer>().material.color;
     }
 
     public void Rotate(float multiplier)
@@ -28,5 +30,10 @@ public class ObjectDetailsScript : MonoBehaviour
         eulerAngles.z = 0;
         newRotation.eulerAngles = eulerAngles;
         transform.rotation = newRotation;
+    }
+
+    public Color GetSavedColor()
+    {
+        return savedColor;
     }
 }

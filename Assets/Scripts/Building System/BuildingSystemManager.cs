@@ -25,9 +25,19 @@ public class BuildingSystemManager : MonoBehaviour
         public Texture texture;
     }
 
+    // Materials
     public MaterialProperties previewMaterialProperties;
     [SerializeField]
     private Material basicPreviewMaterial;
+
+    // Object lists
+    private List<GameObject> placedObjects = new List<GameObject>();
+    private List<GameObject> highlightEffectObjects = new List<GameObject>();
+    private List<GameObject> selectedObjects = new List<GameObject>();
+
+    // Changes menu
+    [SerializeField]
+    private GameObject changeMenu;
 
     // Basic building state machine
     public enum buildingMode
@@ -148,6 +158,47 @@ public class BuildingSystemManager : MonoBehaviour
     private void HandleNoModeLogic()
     {
         // Handles the case when no building mode is selected, i.e. Edit Mode
+
+        // Cast raycast to select objects
+        GameObject highlightedObject = RaycastPlacedObjectsDetection();
+
+        // Fail safe for no object detection
+        if (highlightedObject == null)
+        {
+            if (highlightEffectObjects.Count > 0)
+            {
+                foreach (GameObject highlightedObject in highlightEffectObjects)
+                {
+                    DehighlightSelectedObject(highlightedObject);
+                }
+            }
+        }
+
+        // Highlight selected Object
+        HighlightSelectedObject(highlightedObject);
+
+        // On left click add to the selectedObjects list
+        if (Input.GetMouseButtonDown(0))
+        {
+            selectedObjects.Add(highlightedObject);
+            highlightEffectObjects.Remove(highlightedObject);
+        }
+
+        // Open context menu for edition of the changes
+        ActivateContextMenu();
+
+        // Right click to deselect all
+        if (Input.GetMouseButtonDown(1))
+        {
+            DeselectAll();
+        }
+
+        // Click delete to remove all objects
+        if (Input.GetKeyDown(KeyCode.Delete))
+        {
+            RemoveAll();
+        }
+
     }
 
     public void SwitchModes()
@@ -170,6 +221,8 @@ public class BuildingSystemManager : MonoBehaviour
 
     public void ObjectRotationControl()
     {
+        if (currentObjectToPlace == null) return;
+
         if (Input.GetKey(KeyCode.RightBracket))
         {
             currentObjectToPlace.GetComponent<ObjectDetailsScript>().Rotate(1f);
@@ -248,6 +301,27 @@ public class BuildingSystemManager : MonoBehaviour
         return worldPosition;
     }
 
+    public GameObject RaycastPlacedObjectsDetection()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        GameObject hitObject = null;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            hitObject = hit.transform.gameObject;
+            if (hitObject.GetComponent<ObjectDetailsScript>() != null)
+            {
+                return hitObject;
+            }
+        }
+        return null;
+    }
+
+    public void ActivateContextMenu()
+    {
+        changeMenu.SetActive(true);
+    }
+
     public Vector3 GetMouseWorldPositionPhysicsRaycast()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -261,6 +335,36 @@ public class BuildingSystemManager : MonoBehaviour
             raycastHitPosition = GetMouseWorldPositionOnPlane();
         }
         return raycastHitPosition;
+    }
+
+    public void RemoveAll()
+    {
+        foreach (GameObject selectedObject in selectedObjects)
+        {
+            Destroy(selectedObject);
+        }
+        selectedObjects.Clear();
+    }
+
+    public void DeselectAll()
+    {
+        foreach (GameObject selectedObject in selectedObjects)
+        {
+            DehighlightSelectedObject(selectedObject);
+        }
+
+        selectedObjects.Clear();
+    }
+
+    public void HighlightSelectedObject(GameObject highlightedObject)
+    {
+        highlightedObject.GetComponent<MeshRenderer>().SetColor("_BaseColor", highlightColor);
+        HighlightSelectedObject.Add(highlightedObject);
+    }
+
+    public void DehighlightSelectedObject(GameObject highlightedObject)
+    {
+        highlightedObject.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", highlightedObject.GetComponent<ObjectDetailsScript>().GetSavedColor());
     }
 
     public void SetNewObjectToPlace(GameObject newObject)

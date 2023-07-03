@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9c1dfd30f043e04f9ece8df68f92082, type: 3}
+  m_Name: BuildCapsuleEntryData
+  m_EditorClassIdentifier: 
+  referencedObject: {fileID: 230521498636689355, guid: a58e6b234032690459d197b9b6ca67e7,
+    type: 3}
+  referenceImage: {fileID: 21300000, guid: 02f4c130d63cd144c84878608e3ed133, type: 3}

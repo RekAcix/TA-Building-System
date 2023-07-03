@@ -14,52 +14,35 @@ public class GridManager : MonoBehaviour
     private float gridCellSize = 1f;
 
     [SerializeField]
+    private bool toVisualize = true;
+
+    [SerializeField]
     private Vector3 originPosition = Vector3.zero;
 
     private Grid<GridCell> baseGrid;
 
-    // Creates the basic Grid Cell datatype
-    public class GridCell
-    {
-        private Grid<GridCell> grid;
-        private int x;
-        private int y;
-
-        private GameObject worldObject;
-
-        public GridCell(Grid<GridCell> grid, int x, int y)
-        {
-            this.grid = grid;
-            this.x = x;
-            this.y = y;
-        }
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        baseGrid = new Grid<GridCell>(gridWidth, gridHeight, gridCellSize, originPosition);
+        baseGrid = new Grid<GridCell>(gridWidth, gridHeight, gridCellSize, originPosition, toVisualize);
+        FillWithGridCells(baseGrid);
     }
 
-    void Update()
+    public void FillWithGridCells(Grid<GridCell> grid)
     {
-        // Check for clicks
-        HandleLeftClick();
-    }
-
-    public void HandleLeftClick()
-    {
-        if (Input.GetMouseButtonDown(0))
+        // Fills the grid with data-type, in this case GridCells.
+        for (int x = 0; x < gridWidth; x++)
         {
-            Vector3 mouseWorldPosition = GetMouseWorldPositionOnPlane();
-            Debug.Log(mouseWorldPosition);
-            // baseGrid.GetCell(mouseWorldPosition)
+            for (int y = 0; y < gridHeight; y++)
+            {
+                grid.gridArray[x, y] = new GridCell(grid, x, y, grid.GetWorldPosition(x, y));
+            }
         }
     }
 
     public GridCell GetGridCell(Vector3 mousePosition)
     {
-        return baseGrid.GetCell(GetMouseWorldPositionOnPlane());
+        return baseGrid.GetCell(mousePosition);
     }
 
     public Vector3 GetMouseWorldPositionOnPlane()

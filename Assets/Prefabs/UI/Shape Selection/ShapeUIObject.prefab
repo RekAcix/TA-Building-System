@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 851262439895247236}
   - component: {fileID: 4190563389281246871}
   - component: {fileID: 7495206822182074038}
+  - component: {fileID: 1185422146602643610}
   m_Layer: 5
   m_Name: ShapeUIObject
   m_TagString: Untagged
@@ -101,9 +102,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_PressedColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -122,7 +123,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 851262439895247236}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1185422146602643610}
+        m_TargetAssemblyTypeName: ShapeUIObjectEntry, Assembly-CSharp
+        m_MethodName: SelectObject
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7495206822182074038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +150,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 5, y: 5, z: 5, w: 5}
   m_Softness: {x: 0, y: 0}
+--- !u!114 &1185422146602643610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138627449875443518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eccd0b9b579864146bdf28c52d43be04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referencedObject: {fileID: 7397016653659773233, guid: 97d82ebe688c3ab4091a32bb5da5e523,
+    type: 3}
+  referencedObjectImage: {fileID: 8983394576348428501}
 --- !u!1 &2566204770962599087
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +231,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 5b9b64e7a9040c34a9bce3a8c560d732, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

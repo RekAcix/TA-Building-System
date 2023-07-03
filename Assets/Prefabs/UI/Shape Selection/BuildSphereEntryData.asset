@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9c1dfd30f043e04f9ece8df68f92082, type: 3}
+  m_Name: BuildSphereEntryData
+  m_EditorClassIdentifier: 
+  referencedObject: {fileID: 7492985430252177235, guid: 1bcfd3e991bc3e04e9779aed24a40921,
+    type: 3}
+  referenceImage: {fileID: 21300000, guid: e378d13c528383740af9a2a056e0a47b, type: 3}

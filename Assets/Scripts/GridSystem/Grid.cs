@@ -9,21 +9,23 @@ public class Grid<TGridCell>
     private float cellSize;
     private Vector3 originPosition;
 
-    private TGridCell[,] gridArray;
+    public TGridCell[,] gridArray;
+    private bool toVisualize;
 
-    public Grid(int width, int height, float cellSize, Vector3 originPosition)
+    public Grid(int width, int height, float cellSize, Vector3 originPosition, bool toVisualize)
     {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
         this.originPosition = originPosition;
+        this.toVisualize = toVisualize;
 
         gridArray = new TGridCell[width, height];
 
-        InitializeGrid();
+        if (toVisualize) VisualizeGrid();
     }
 
-    private void InitializeGrid()
+    private void VisualizeGrid()
     {
         // Creates the grid in the game world.
 
@@ -47,7 +49,7 @@ public class Grid<TGridCell>
         Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
     }
 
-    private Vector3 GetWorldPosition(int x, int y)
+    public Vector3 GetWorldPosition(int x, int y)
     {
         // Coordinate system adjusted for the convention
         return new Vector3(x, 0, y) * cellSize + originPosition;
@@ -94,6 +96,11 @@ public class Grid<TGridCell>
         int x, y;
         GetXY(worldPosition, out x, out y);
         return GetCell(x, y);
+    }
+
+    public float GetCellSize()
+    {
+        return cellSize;
     }
 
 

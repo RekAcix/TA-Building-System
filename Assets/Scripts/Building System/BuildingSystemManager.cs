@@ -19,8 +19,10 @@ public class BuildingSystemManager : MonoBehaviour
     [SerializeField]
     private GridManager gridManager;
 
-    [SerializeField]
+    [SerializeField] // Asset initial scale
     private float scale = 1f;
+
+    private float[] currentScale = new float[3];
 
     // Preview Material properties
     [System.Serializable]
@@ -66,6 +68,13 @@ public class BuildingSystemManager : MonoBehaviour
     // Interface
     [SerializeField]
     private TextMeshProUGUI modeText;
+
+    void Awake()
+    {
+        currentScale[0] = 1f;
+        currentScale[1] = 1f;
+        currentScale[2] = 1f;
+    }
 
     void Start()
     {
@@ -472,6 +481,29 @@ public class BuildingSystemManager : MonoBehaviour
         }
     }
 
+    public void UpdateObjectScales(float[] currentScale)
+    {
+        this.currentScale = currentScale;
+
+        if (currentObjectToPlace != null)
+        {
+            UpdateScale(currentObjectToPlace);
+        }
+
+        if (selectedObjects.Count > 0)
+        {
+            foreach (GameObject obj in selectedObjects)
+            {
+                UpdateScale(obj);
+            }
+        }
+    }
+
+    public void UpdateScale(GameObject obj)
+    {
+        obj.transform.localScale = new Vector3(currentScale[0], currentScale[1], currentScale[2]);
+    }
+
     public void MoveCurrentObjectToMouseOnPlane()
     {
         currentObjectToPlace.transform.position = GetMouseWorldPositionOnPlane() + new Vector3(0, scale * 0.5f, 0);
@@ -589,6 +621,7 @@ public class BuildingSystemManager : MonoBehaviour
     {
         // Place and assign Object
         currentObjectToPlace = Instantiate(newObject, objectParentTransform);
+        UpdateScale(currentObjectToPlace);
         currentObjectToPlace.transform.position = GetMouseWorldPositionOnPlane();
     }
 

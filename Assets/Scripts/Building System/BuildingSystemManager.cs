@@ -218,6 +218,21 @@ public class BuildingSystemManager : MonoBehaviour
         // Cast raycast to select objects
         GameObject highlightedObject = RaycastPlacedObjectsDetection();
 
+        // Get rid of highlight if new object
+        if (highlightEffectObjects.Count > 0)
+        {
+            foreach (GameObject highObject in highlightEffectObjects)
+            {
+                if (highObject == null)
+                {
+                    highlightEffectObjects.Remove(highObject);
+                    return;
+                }
+                DehighlightSelectedObject(highObject);
+            }
+            highlightEffectObjects.Clear();
+        }
+
         MoveSelectedObjects();
 
         // Fail safe for no object detection
@@ -229,6 +244,7 @@ public class BuildingSystemManager : MonoBehaviour
                 RemoveAll();
             }
 
+            
             if (highlightEffectObjects.Count > 0)
             {
                 foreach (GameObject highObject in highlightEffectObjects)
@@ -269,6 +285,7 @@ public class BuildingSystemManager : MonoBehaviour
                 selectedObjects.Add(highlightedObject);
             } else
             {
+                DeselectAll();
                 selectedObjects = new List<GameObject>();
                 selectedObjects.Add(highlightedObject);
             }
@@ -313,7 +330,7 @@ public class BuildingSystemManager : MonoBehaviour
                 //multipleObjectParentTransform.transform.Rotate(0f, combinedRotationSpeed * Time.deltaTime, 0f, Space.World);
                 foreach (GameObject objects in selectedObjects)
                 {
-                    float reverseMultiplier = -1f * Convert.ToInt32(Input.GetKey(KeyCode.LeftBracket));
+                    float reverseMultiplier = 1f + (-2f * Convert.ToInt32(Input.GetKey(KeyCode.LeftBracket)));
                     //objects.GetComponent<ObjectDetailsScript>().CalculateOffset(GetMouseWorldPositionPhysicsRaycast());
                     objects.transform.RotateAround(rotationAxisPoint, Vector3.up, combinedRotationSpeed * Time.deltaTime * reverseMultiplier);
                     objects.GetComponent<ObjectDetailsScript>().CalculateCurrentOffset(GetMouseWorldPositionOnPlane());

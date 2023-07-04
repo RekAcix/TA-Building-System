@@ -65,7 +65,7 @@ public class Grid<TGridCell>
         x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
         y = Mathf.FloorToInt((worldPosition - originPosition).z / cellSize);
         z = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
-        Debug.Log(x.ToString() + "," + y.ToString() + "," + z.ToString());
+        //Debug.Log(x.ToString() + "," + y.ToString() + "," + z.ToString());
     }
 
     public void SetCell(int x, int y, int z, TGridCell value)

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18049325, g: 0.22596446, b: 0.30704182, a: 1}
+  m_IndirectSpecularColor: {r: 0.18279997, g: 0.2285035, b: 0.30701292, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1809,14 +1809,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
-  m_LocalRotation: {x: 0.39863807, y: -0.16681167, z: 0.14033474, w: 0.8908242}
-  m_LocalPosition: {x: 13.79, y: 10.43, z: -5.85}
+  m_LocalRotation: {x: 0.88408995, y: -0.011919652, z: -0.29629824, w: 0.3611789}
+  m_LocalPosition: {x: 27.4, y: 12.19, z: 0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1891169047}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 49.205, y: -16.477, z: 10.319}
+  m_LocalEulerAnglesHint: {x: 140.834, y: 43.380005, z: 17.651993}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5310,11 +5310,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7a01690960ba9b44aa31dbba98abc87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: 60
-  gridHeight: 60
-  gridDepth: 5
+  gridWidth: 100
+  gridHeight: 100
+  gridDepth: 10
   gridCellSize: 1
-  toVisualize: 1
+  toVisualize: 0
   originPosition: {x: -50, y: -0.001, z: -50}
 --- !u!1001 &1669702989
 PrefabInstance:

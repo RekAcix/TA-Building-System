@@ -121,7 +121,6 @@ public class CameraController : MonoBehaviour
     {
         if (Input.GetMouseButton(2))
         {
-            Debug.Log(Input.GetAxis("Mouse X"));
             yaw += mouseRotSpeed * Input.GetAxis("Mouse X");
             pitch -= mouseRotSpeed * Input.GetAxis("Mouse Y");
 

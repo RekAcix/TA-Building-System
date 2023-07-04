@@ -982,6 +982,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShapeUITextureEntry (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937707521430660237, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1247,6 +1257,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShapeUITextureEntry (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937707521430660237, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1418,7 +1438,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: bigLeavesShrubs Variant (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1996149129273314825, guid: 6bbaea1be78b8d02d852cd83ce21cd94, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2031,6 +2052,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShapeUITextureEntry (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937707521430660237, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2224,7 +2255,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: bigLeavesShrubs Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1996149129273314825, guid: 6bbaea1be78b8d02d852cd83ce21cd94, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3038,6 +3070,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShapeUITextureEntry (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937707521430660237, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3304,6 +3346,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ShapeUITextureEntry (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937707521430660237, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3652,7 +3704,7 @@ PrefabInstance:
         type: 3}
       propertyPath: texture
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2800000, guid: d10e1d4b20b047745ab97f3c827b721b, type: 3}
     - target: {fileID: 287203671894646386, guid: ff0ce91324421584b89ee506a4feab2b,
         type: 3}
       propertyPath: buildingSystem
@@ -3660,9 +3712,15 @@ PrefabInstance:
       objectReference: {fileID: 2009585825}
     - target: {fileID: 367442350455711220, guid: ff0ce91324421584b89ee506a4feab2b,
         type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d10e1d4b20b047745ab97f3c827b721b,
+        type: 3}
+    - target: {fileID: 367442350455711220, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 10758, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 0}
     - target: {fileID: 596943628008231037, guid: ff0ce91324421584b89ee506a4feab2b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3768,10 +3826,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2236908336311952507, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
         type: 3}
       propertyPath: m_Name
       value: ShapeUITextureEntry (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937707521430660237, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4115,6 +4188,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ShapeUITextureEntry (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937707521430660237, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4557,6 +4640,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShapeUITextureEntry (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937707521430660237, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4910,6 +5003,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ShapeUITextureEntry (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937707521430660237, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5484,7 +5587,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: bigLeavesShrubs Variant (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1996149129273314825, guid: 6bbaea1be78b8d02d852cd83ce21cd94, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -5563,7 +5667,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: bigLeavesShrubs Variant (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1996149129273314825, guid: 6bbaea1be78b8d02d852cd83ce21cd94, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -7267,6 +7372,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ShapeUITextureEntry
+      objectReference: {fileID: 0}
+    - target: {fileID: 3468346135817664158, guid: ff0ce91324421584b89ee506a4feab2b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

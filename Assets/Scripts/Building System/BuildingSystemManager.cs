@@ -243,7 +243,6 @@ public class BuildingSystemManager : MonoBehaviour
             {
                 RemoveAll();
             }
-
             
             if (highlightEffectObjects.Count > 0)
             {
@@ -291,6 +290,8 @@ public class BuildingSystemManager : MonoBehaviour
             }
 
         }
+
+
 
         // Click delete to remove all selected objects and higlighted ones
         if (Input.GetKeyDown(KeyCode.Delete))
@@ -383,6 +384,23 @@ public class BuildingSystemManager : MonoBehaviour
 
     public void ObjectRotationControl()
     {
+        if (Input.GetKeyDown(KeyCode.Slash))
+        {
+            if (currentObjectToPlace != null)
+            {
+                Debug.Log("Flips");
+                currentObjectToPlace.GetComponent<ObjectDetailsScript>().Flip(90f);
+            }
+
+            if (selectedObjects.Count > 0)
+            {
+                foreach (GameObject obj in selectedObjects)
+                {
+                    obj.GetComponent<ObjectDetailsScript>().Flip(90f);
+                }
+            }
+        }
+
         if (currentObjectToPlace == null) return;
 
         if (Input.GetKey(KeyCode.RightBracket))
@@ -395,11 +413,7 @@ public class BuildingSystemManager : MonoBehaviour
             currentObjectToPlace.GetComponent<ObjectDetailsScript>().Rotate(-1f);
         }
 
-        if (Input.GetKeyDown(KeyCode.Slash))
-        {
-            Debug.Log("Flips");
-            currentObjectToPlace.GetComponent<ObjectDetailsScript>().Flip(90f);
-        }
+        
 
     }
 

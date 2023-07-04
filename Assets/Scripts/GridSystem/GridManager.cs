@@ -11,6 +11,9 @@ public class GridManager : MonoBehaviour
     private int gridHeight = 5;
 
     [SerializeField]
+    private int gridDepth = 5;
+
+    [SerializeField]
     private float gridCellSize = 1f;
 
     [SerializeField]
@@ -24,7 +27,7 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        baseGrid = new Grid<GridCell>(gridWidth, gridHeight, gridCellSize, originPosition, toVisualize);
+        baseGrid = new Grid<GridCell>(gridWidth, gridHeight, gridDepth, gridCellSize, originPosition, toVisualize);
         FillWithGridCells(baseGrid);
     }
 
@@ -35,7 +38,10 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                grid.gridArray[x, y] = new GridCell(grid, x, y, grid.GetWorldPosition(x, y));
+                for (int z = 0; z < gridDepth; z++)
+                {
+                    grid.gridArray[x, y, z] = new GridCell(grid, x, y, z, grid.GetWorldPosition(x, y, z));
+                } 
             }
         }
     }
@@ -45,6 +51,7 @@ public class GridManager : MonoBehaviour
         return baseGrid.GetCell(mousePosition);
     }
 
+    /*
     public Vector3 GetMouseWorldPositionOnPlane()
     {
         Vector3 worldPosition = Vector3.zero;
@@ -58,4 +65,5 @@ public class GridManager : MonoBehaviour
 
         return worldPosition;
     }
+    */
 }

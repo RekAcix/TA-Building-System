@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
@@ -175,7 +176,11 @@ public class BuildingSystemManager : MonoBehaviour
     private void HandleGridModeLogic()
     {
         // Updates every frame to handle placement via Grid
-        GridCell selectedGridCell = gridManager.GetGridCell(GetMouseWorldPositionOnPlane());
+
+        // Need to accomodate for the fact that things can overlap on a grid
+        Vector3 mousePosition = GetMouseWorldPositionPhysicsRaycast();
+        Vector3 direction = Vector3.Normalize(mousePosition - Camera.main.transform.position);
+        GridCell selectedGridCell = gridManager.GetGridCell(mousePosition - direction * 0.25f * scale);
 
         // Failsafe for no object
         if (currentObjectToPlace == null) return;
@@ -257,7 +262,7 @@ public class BuildingSystemManager : MonoBehaviour
         // On left click add to the selectedObjects list
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log(highlightEffectObjects.Count);
+            //Debug.Log(highlightEffectObjects.Count);
             highlightEffectObjects.Remove(highlightedObject);
             if (Input.GetKey(KeyCode.LeftControl))
             {
@@ -303,13 +308,14 @@ public class BuildingSystemManager : MonoBehaviour
             }
 
             // Rotate it along the axis
-            if (Input.GetKey(KeyCode.RightBracket))
+            if (Input.GetKey(KeyCode.RightBracket) || Input.GetKey(KeyCode.LeftBracket))
             {
                 //multipleObjectParentTransform.transform.Rotate(0f, combinedRotationSpeed * Time.deltaTime, 0f, Space.World);
                 foreach (GameObject objects in selectedObjects)
                 {
+                    float reverseMultiplier = -1f * Convert.ToInt32(Input.GetKey(KeyCode.LeftBracket));
                     //objects.GetComponent<ObjectDetailsScript>().CalculateOffset(GetMouseWorldPositionPhysicsRaycast());
-                    objects.transform.RotateAround(rotationAxisPoint, Vector3.up, combinedRotationSpeed * Time.deltaTime);
+                    objects.transform.RotateAround(rotationAxisPoint, Vector3.up, combinedRotationSpeed * Time.deltaTime * reverseMultiplier);
                     objects.GetComponent<ObjectDetailsScript>().CalculateCurrentOffset(GetMouseWorldPositionOnPlane());
                 }
             } else
@@ -333,7 +339,6 @@ public class BuildingSystemManager : MonoBehaviour
                 objects.transform.parent = objectParentTransform;
                 objects.GetComponent<ObjectDetailsScript>().UpdateLockedPosition();
                 objects.layer = LayerMask.NameToLayer("Default");
-
             }
         }
     }

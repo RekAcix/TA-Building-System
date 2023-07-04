@@ -5310,11 +5310,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7a01690960ba9b44aa31dbba98abc87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: 100
-  gridHeight: 100
+  gridWidth: 60
+  gridHeight: 60
+  gridDepth: 5
   gridCellSize: 1
-  toVisualize: 0
-  originPosition: {x: -50, y: 0, z: -50}
+  toVisualize: 1
+  originPosition: {x: -50, y: -0.001, z: -50}
 --- !u!1001 &1669702989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6861,8 +6862,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

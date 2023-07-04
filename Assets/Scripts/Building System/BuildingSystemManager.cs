@@ -214,6 +214,7 @@ public class BuildingSystemManager : MonoBehaviour
         if (currentObjectToPlace == null) return;
 
         // Follows the mouse based off physics raycast
+        // Can be changed depending on the anchor convention
         MoveCurrentObjectToMouseRaycast();
 
         // Checks for placing the shape
@@ -397,7 +398,7 @@ public class BuildingSystemManager : MonoBehaviour
         {
             if (currentObjectToPlace != null)
             {
-                Debug.Log("Flips");
+                //Debug.Log("Flips");
                 currentObjectToPlace.GetComponent<ObjectDetailsScript>().Flip(90f);
             }
 
@@ -432,7 +433,7 @@ public class BuildingSystemManager : MonoBehaviour
         {
             if (EventSystem.current.IsPointerOverGameObject())
             {
-                Debug.Log("Clicked on an UI element");
+                //Debug.Log("Clicked on an UI element");
                 return;
             }
 

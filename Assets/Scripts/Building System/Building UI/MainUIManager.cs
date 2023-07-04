@@ -15,4 +15,9 @@ public class MainUIManager : MonoBehaviour
         toggledUI = !toggledUI;
     }
 
+    public void ExitApplication()
+    {
+        Application.Quit();
+    }
+
 }

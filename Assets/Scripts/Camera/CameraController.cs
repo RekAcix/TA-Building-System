@@ -18,6 +18,20 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float maxZoom = 10f;
 
+    [SerializeField]
+    private float zoomSpeed = 0.5f;
+
+    [SerializeField]
+    private float mouseRotSpeed = 2f;
+    private float pitch = 30f;
+    private float yaw = 0f;
+
+    [SerializeField]
+    private float minHeight = -5f;
+
+    [SerializeField]
+    private Vector2 rotationLimits;
+
     private Camera mainCamera;
 
     void Awake()
@@ -34,9 +48,18 @@ public class CameraController : MonoBehaviour
         // Rotation
         HandleRotation();
 
+        // Rotation Of camera via panning
+        HandlePitchYaw();
+
         // Movement
         HandleMovement();
 
+        // Handle Zoom
+        HandleZoom();
+
+
+        pitch = transform.eulerAngles.x;
+        yaw = transform.eulerAngles.y;
     }
 
     private void HandleRotation()
@@ -82,7 +105,44 @@ public class CameraController : MonoBehaviour
             position -= transform.TransformDirection(Vector3.right) * movementSpeed;
         }
 
+        // Check to not clip camera underground and far above into the sky
+        if (position.y <= minHeight)
+        {
+            position.y = minHeight;
+        } else if (position.y >= maxZoom)
+        {
+            position.y = maxZoom;
+        }
         transform.position = position;
 
+    }
+
+    private void HandlePitchYaw()
+    {
+        if (Input.GetMouseButton(2))
+        {
+            Debug.Log(Input.GetAxis("Mouse X"));
+            yaw += mouseRotSpeed * Input.GetAxis("Mouse X");
+            pitch -= mouseRotSpeed * Input.GetAxis("Mouse Y");
+
+            pitch = Mathf.Clamp(pitch, rotationLimits.x, rotationLimits.y);
+
+            transform.eulerAngles = new Vector3(pitch, yaw, 0f);
+        }
+    }
+
+    private void HandleZoom()
+    {
+        float zoomVel = -zoomSpeed * Input.mouseScrollDelta.y;
+        if (zoomVel != 0)
+        {
+            Vector3 position = transform.position;
+            position.y += zoomVel;
+
+            if (position.y >= minZoom && position.y <= maxZoom)
+            {
+                transform.position = position;
+            }     
+        }
     }
 }

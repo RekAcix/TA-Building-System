@@ -25,6 +25,7 @@ public class ShapeSelector : MonoBehaviour
     {
         // Selects object
         buildingSystem.ChangeCurrentObject(newObject);
+        buildingSystem.UpdateSelectedShapes(newObject);
     }
 
     public void InitializeSelectionUI()

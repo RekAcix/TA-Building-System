@@ -8,6 +8,7 @@ public class ObjectDetailsScript : MonoBehaviour
 
     private float rotationSpeed = 90f;
     private Color savedColor;
+    private Vector3 offset;
 
     public void Initialize()
     {
@@ -32,8 +33,40 @@ public class ObjectDetailsScript : MonoBehaviour
         transform.rotation = newRotation;
     }
 
+    public void CopyDetails(ObjectDetailsScript otherDetails)
+    {
+        lockedPosition = otherDetails.GetLockedPosition();
+        savedColor = otherDetails.GetSavedColor();
+        offset = otherDetails.GetOffset();
+    }
+
+    public void UpdateLockedPosition()
+    {
+        lockedPosition = transform.position;
+    }
+
+    public void CalculateOffset(Vector3 mousePosition)
+    {
+        offset = lockedPosition - mousePosition;
+    }
+
+    public void CalculateCurrentOffset(Vector3 mousePosition)
+    {
+        offset = transform.position - mousePosition;
+    }
+
+    public Vector3 GetOffset()
+    {
+        return offset;
+    }
+
     public Color GetSavedColor()
     {
         return savedColor;
+    }
+
+    public Vector3 GetLockedPosition()
+    {
+        return lockedPosition;
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using TMPro;
 
 public class BuildingSystemManager : MonoBehaviour
 {
@@ -9,6 +11,9 @@ public class BuildingSystemManager : MonoBehaviour
 
     [SerializeField]
     private Transform objectParentTransform;
+
+    [SerializeField]
+    private Transform multipleObjectParentTransform;
 
     [SerializeField]
     private GridManager gridManager;
@@ -35,12 +40,17 @@ public class BuildingSystemManager : MonoBehaviour
     private Color highlightColor;
 
     private List<GameObject> placedObjects = new List<GameObject>();
+    [SerializeField]
     private List<GameObject> highlightEffectObjects = new List<GameObject>();
+    [SerializeField]
     private List<GameObject> selectedObjects = new List<GameObject>();
 
     // Changes menu
     [SerializeField]
     private GameObject changeMenu;
+
+    private float combinedRotationSpeed = 60f;
+    private Vector3 rotationAxisPoint;
 
     // Basic building state machine
     public enum buildingMode
@@ -52,6 +62,10 @@ public class BuildingSystemManager : MonoBehaviour
 
     private buildingMode currentBuildingMode;
 
+    // Interface
+    [SerializeField]
+    private TextMeshProUGUI modeText;
+
     void Start()
     {
         currentBuildingMode = buildingMode.none;
@@ -59,6 +73,9 @@ public class BuildingSystemManager : MonoBehaviour
 
     public void ChangeCurrentObject(GameObject newObject)
     {
+        // No effect if only changes shape of selected objects
+        if (selectedObjects.Count > 0) return;
+
         if (newObject == null)
         {
             // No building mode
@@ -90,6 +107,35 @@ public class BuildingSystemManager : MonoBehaviour
         }
     }
 
+    public void UpdateSelectedShapes(GameObject newObject)
+    {
+        if (selectedObjects.Count == 0) return;
+
+        List<GameObject> objToRemove = new List<GameObject>();
+        List<GameObject> objToAdd = new List<GameObject>();
+
+        foreach (GameObject obj in selectedObjects)
+        {
+            GameObject replacement = Instantiate(newObject, obj.transform.position, obj.transform.rotation, objectParentTransform);
+            replacement.GetComponent<MeshRenderer>().material.CopyPropertiesFromMaterial(obj.GetComponent<MeshRenderer>().material);
+            replacement.GetComponent<ObjectDetailsScript>().CopyDetails(obj.GetComponent<ObjectDetailsScript>());
+            objToAdd.Add(replacement);
+            objToRemove.Add(obj);
+        }
+
+        foreach (GameObject obj in objToAdd)
+        {
+            selectedObjects.Add(obj);
+        }
+
+        foreach (GameObject obj in objToRemove)
+        {
+            selectedObjects.Remove(obj);
+            Destroy(obj);
+        }
+
+    }
+
     public void ChangeMode(buildingMode newMode)
     {
         // Changes the building mode to a newMode
@@ -99,6 +145,8 @@ public class BuildingSystemManager : MonoBehaviour
         {
             Destroy(currentObjectToPlace);
         }
+
+        UpdateTextDisplay();
     }
 
     void Update()
@@ -165,15 +213,29 @@ public class BuildingSystemManager : MonoBehaviour
         // Cast raycast to select objects
         GameObject highlightedObject = RaycastPlacedObjectsDetection();
 
+        MoveSelectedObjects();
+
         // Fail safe for no object detection
         if (highlightedObject == null)
         {
+            // Delete all selected on escape
+            if (Input.GetKeyDown(KeyCode.Delete))
+            {
+                RemoveAll();
+            }
+
             if (highlightEffectObjects.Count > 0)
             {
                 foreach (GameObject highObject in highlightEffectObjects)
                 {
+                    if (highObject == null)
+                    {
+                        highlightEffectObjects.Remove(highObject);
+                        return;
+                    }
                     DehighlightSelectedObject(highObject);
                 }
+                highlightEffectObjects.Clear();
             }
 
             // Right click to deselect all
@@ -186,30 +248,94 @@ public class BuildingSystemManager : MonoBehaviour
         }
 
         // Highlight selected Object
-        HighlightSelectedObject(highlightedObject);
-        highlightEffectObjects.Add(highlightedObject);
+        if (!selectedObjects.Contains(highlightedObject) && !highlightEffectObjects.Contains(highlightedObject))
+        {
+            HighlightSelectedObject(highlightedObject);
+            highlightEffectObjects.Add(highlightedObject);
+        }
 
         // On left click add to the selectedObjects list
         if (Input.GetMouseButtonDown(0))
         {
-            selectedObjects.Add(highlightedObject);
+            Debug.Log(highlightEffectObjects.Count);
             highlightEffectObjects.Remove(highlightedObject);
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                selectedObjects.Add(highlightedObject);
+            } else
+            {
+                selectedObjects = new List<GameObject>();
+                selectedObjects.Add(highlightedObject);
+            }
 
-            // Open context menu for edition of the changes
-            ActivateContextMenu();
         }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            Destroy(highlightedObject);
-        }
-
-        // Click delete to remove all objects
+        // Click delete to remove all selected objects and higlighted ones
         if (Input.GetKeyDown(KeyCode.Delete))
         {
+            Destroy(highlightedObject);
             RemoveAll();
         }
 
+    }
+
+    private void MoveSelectedObjects()
+    {
+        // First calculate offset from the cursor on pressing the button
+        if (Input.GetMouseButtonDown(1))
+        {
+            foreach (GameObject objects in selectedObjects)
+            {
+                objects.GetComponent<ObjectDetailsScript>().CalculateOffset(GetMouseWorldPositionOnPlane());
+                objects.layer = LayerMask.NameToLayer("Ignore Raycast");
+                // Need to update this position with progress
+                //objects.transform.parent = multipleObjectParentTransform;
+            }
+        }
+
+        // As the button is being dragged, update the position along with the offset
+        if (Input.GetMouseButton(1))
+        {
+            if (Input.GetKeyDown(KeyCode.RightBracket) || Input.GetKey(KeyCode.LeftBracket))
+            {
+                // rotationAxisPoint = GetMouseWorldPositionOnPlane() + new Vector3(0, scale * 0.5f, 0);
+                rotationAxisPoint = CalculateCenterPoint(selectedObjects);
+            }
+
+            // Rotate it along the axis
+            if (Input.GetKey(KeyCode.RightBracket))
+            {
+                //multipleObjectParentTransform.transform.Rotate(0f, combinedRotationSpeed * Time.deltaTime, 0f, Space.World);
+                foreach (GameObject objects in selectedObjects)
+                {
+                    //objects.GetComponent<ObjectDetailsScript>().CalculateOffset(GetMouseWorldPositionPhysicsRaycast());
+                    objects.transform.RotateAround(rotationAxisPoint, Vector3.up, combinedRotationSpeed * Time.deltaTime);
+                    objects.GetComponent<ObjectDetailsScript>().CalculateCurrentOffset(GetMouseWorldPositionOnPlane());
+                }
+            } else
+            {
+                // Adjust all of the selected objects positions by the mouse cursor position
+                foreach (GameObject objects in selectedObjects)
+                {
+                    //objects.transform.position = GetMouseWorldPositionPhysicsRaycast() + objects.GetComponent<ObjectDetailsScript>().GetOffset();
+                    objects.transform.position = GetMouseWorldPositionOnPlane() + objects.GetComponent<ObjectDetailsScript>().GetOffset();
+                }
+
+            }
+
+        }
+
+        // On release, update the positions
+        if (Input.GetMouseButtonUp(1))
+        {
+            foreach (GameObject objects in selectedObjects)
+            {
+                objects.transform.parent = objectParentTransform;
+                objects.GetComponent<ObjectDetailsScript>().UpdateLockedPosition();
+                objects.layer = LayerMask.NameToLayer("Default");
+
+            }
+        }
     }
 
     public void SwitchModes()
@@ -217,16 +343,19 @@ public class BuildingSystemManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G))
         {
             ChangeMode(buildingMode.grid);
+            DeselectAll();
         }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
             ChangeMode(buildingMode.freeform);
+            DeselectAll();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             ChangeMode(buildingMode.none);
+            DeselectAll();
         }
     }
 
@@ -256,6 +385,12 @@ public class BuildingSystemManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                Debug.Log("Clicked on an UI element");
+                return;
+            }
+
             // Places the object
             PlaceObject(Instantiate(currentObjectToPlace, objectParentTransform));
             
@@ -275,10 +410,30 @@ public class BuildingSystemManager : MonoBehaviour
         
     }
 
+    public Vector3 CalculateCenterPoint(List<GameObject> objectList)
+    {
+        Vector3 totalPosition = Vector3.zero;
+        foreach (GameObject obj in objectList)
+        {
+            totalPosition += obj.transform.position;
+        }
+        totalPosition = totalPosition / objectList.Count;
+        return totalPosition;
+    }
+
     public void ChangeTexture(Texture newTexture)
     {
         previewMaterialProperties.texture = newTexture;
         SetMaterialProperties();
+
+        // Change for all selected objects
+        if (selectedObjects.Count > 0)
+        {
+            foreach (GameObject obj in selectedObjects)
+            {
+                SetMaterialProperties(obj);
+            }
+        }
     }
 
     public void MoveCurrentObjectToMouseOnPlane()
@@ -362,6 +517,7 @@ public class BuildingSystemManager : MonoBehaviour
         foreach (GameObject selectedObject in selectedObjects)
         {
             if (selectedObject != null) DehighlightSelectedObject(selectedObject);
+            selectedObject.layer = LayerMask.NameToLayer("Default");
         }
 
         selectedObjects.Clear();
@@ -377,6 +533,22 @@ public class BuildingSystemManager : MonoBehaviour
         highlightedObject.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", highlightedObject.GetComponent<ObjectDetailsScript>().GetSavedColor());
     }
 
+    public void UpdateTextDisplay()
+    {
+        switch (currentBuildingMode)
+        {
+            case buildingMode.none:
+                modeText.text = "Current Mode: Edit";
+                break;
+            case buildingMode.freeform:
+                modeText.text = "Current Mode: Freeform";
+                break;
+            case buildingMode.grid:
+                modeText.text = "Current Mode: Grid";
+                break;
+        }
+    }
+
     public void SetNewObjectToPlace(GameObject newObject)
     {
         // Place and assign Object
@@ -388,6 +560,12 @@ public class BuildingSystemManager : MonoBehaviour
     {
         if (currentObjectToPlace == null) return;
         MeshRenderer meshRenderer = currentObjectToPlace.GetComponent<MeshRenderer>();
+        SetMaterialProperties(meshRenderer);
+    }
+
+    public void SetMaterialProperties(GameObject obj)
+    {
+        MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
         SetMaterialProperties(meshRenderer);
     }
 
